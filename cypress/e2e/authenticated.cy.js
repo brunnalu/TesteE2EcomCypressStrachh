@@ -1,50 +1,50 @@
-import { faker } from '@faker-js/faker/locale/en'
+import { faker } from '@faker-js/faker/locale/en';
 
 describe('Scenarios where authentication is a pre-condition', () => {
   beforeEach(() => {
-    cy.intercept('GET', '**/notes').as('getNotes')
-    cy.sessionLogin()
-  })
+    cy.intercept('GET', '**/notes').as('getNotes');
+    cy.sessionLogin();
+  });
 
   it('CRUDs a note', () => {
-    const noteDescription = faker.lorem.words(4)
+    const noteDescription = faker.lorem.words(4);
 
-    cy.createNote(noteDescription)
-    cy.wait('@getNotes')
+    cy.createNote(noteDescription);
+    cy.wait('@getNotes');
 
-    const updatedNoteDescription = faker.lorem.words(4)
-    const attachFile = true
+    const updatedNoteDescription = faker.lorem.words(4);
+    const attachFile = true;
 
-    cy.editNote(noteDescription, updatedNoteDescription, attachFile)
-    cy.wait('@getNotes')
+    cy.editNote(noteDescription, updatedNoteDescription, attachFile);
+    cy.wait('@getNotes');
 
-    cy.deleteNote(updatedNoteDescription)
-    cy.wait('@getNotes')
-  })
+    cy.deleteNote(updatedNoteDescription);
+    cy.wait('@getNotes');
+  });
 
   it.only('successfully submits the settings form', () => {
-    cy.intercept('POST', '**/prod/billing').as('paymentRequest')
+    cy.intercept('POST', '**/prod/billing').as('paymentRequest');
 
-    cy.fillSettingsFormAndSubmit()
+    cy.fillSettingsFormAndSubmit();
 
-    cy.wait('@getNotes',{ timeout: 80000 })
+    cy.wait('@getNotes',{ timeout: 80000 });
     cy.wait('@paymentRequest')
       .its('state')
-      .should('be.equal', 'Complete')
-  })
+      .should('be.equal', 'Complete');
+  });
 it.only('logs out', () => {
-    cy.visit('/')
-    cy.wait('@getNotes')
+    cy.visit('/');
+    cy.wait('@getNotes');
     if (Cypress.config('viewportWidth') < Cypress.env('viewportWidthBreakpoint')) {
   cy.get('.navbar-toggle.collapsed')
     .should('be.visible')
-    .click()
+    .click();
 }
-    cy.contains('.nav a', 'Logout').click()
+    cy.contains('.nav a', 'Logout').click();
 
-    cy.get('#email').should('be.visible')
-  })
-})
+    cy.get('#email').should('be.visible');
+  });
+});
 
   
   
