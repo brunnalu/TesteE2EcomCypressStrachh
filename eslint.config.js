@@ -1,6 +1,6 @@
-import cypressPlugin from "eslint-plugin-cypress";
+const cypressPlugin = require("eslint-plugin-cypress");
 
-export default [
+module.exports = [
   {
     files: ["cypress/**/*.js", "cypress.config.js"],
     languageOptions: {
